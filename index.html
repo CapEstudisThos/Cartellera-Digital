@@ -18,7 +18,7 @@
     }
     .contenidor {
       width: 100%;
-      /*height: 95%;*/
+      height: 95%;
       /*background: #f8faf0;*/
       text-align: center;
       /*position: absolute;*/
@@ -52,6 +52,7 @@
     } 
     .horaris {
       margin: 20px;
+      top = 0px;
       font-size: 2em;
       padding: 1em;
       height: 100%;
@@ -72,8 +73,8 @@
       border-bottom: 2px solid #1c1c1c;
     }
 	thead th {
-      background-color: #2196F3;
-      color: white;
+      background-color: #f7424a; 
+      color: white; 
       padding: 10px;
       text-align: center;
       border: 0px solid #ccc;
@@ -83,20 +84,31 @@
       color: #000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);      
     }
-    tbody tr:nth-child(even) {
-      background-color: #FDD835;
+    tbody tr:nth-child(odd) {
+      background-color: #b6ffa9;
+      -webkit-animation: invalid 2s infinite; 
+      -moz-animation:    invalid 2s infinite;
+      -o-animation:      invalid 2s infinite; 
+      animation:         invalid 2s infinite; 
     }
     td {
       padding: 10px;
       text-align: center;
       border-bottom: 1px solid #ccc;
     }
-  
+  	@keyframes invalid {
+      0%   { background-color: #b6ffa9; }
+      /*50%  { background-color: #3cdf1f; }*/
+      50%  { background-color: #72f65b; }
+  	  100% { background-color: #b6ffa9; }
+    }
+	
     img, iframe {
       max-width: 100%;
       max-height: 100%;
-      width: auto; /*100%;*/
-      height: auto; 
+      width: 100%;
+      overflow: visible;
+      /*height: 100%; */
     }
     .imatge-amb-ombra {
       box-shadow: 0 10px 20px rgba(247, 250, 216, 1); /* X, Y, difusió, color */
@@ -108,20 +120,19 @@
     }
 
     @keyframes moureImatge {
-      0% {
-        left: 100%;
-      }
-      100% {
-        left: -100%;
-      }
+      0% { left: 100%; }
+      100% { left: -100%; }
     }
     .fade-img {
-      opacity: 0;
-      animation: fadeInOut 8s ease-in-out infinite;
+      opacity: 1;      
       max-width: 100%;
-      height: auto; 
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* X, Y, difusió, color */
-      border-radius: 8px; /* opcional, per fer les vores arrodonides */
+      width: auto;
+      height: auto;
+      box-shadow: 0 4px 8px 0 rgba(128, 128, 128, 0.2), 10px 6px 20px 0 rgba(128, 128, 128, 0.19);
+      /*box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); / * X, Y, difusió, color */
+      border-radius: 8px;
+      /*animation: fadeInOut 8s ease-in-out infinite;*/
+      /*animation: fadeZoom 5s ease-in-out infinite;*/
     }
 
     @keyframes fadeInOut {
@@ -130,14 +141,34 @@
       80%  { opacity: 1; }
       100% { opacity: 0; }
     }
+    @keyframes fadeZoom {
+      0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.3); /* una mica més gran al començar */
+      }
+      10% { opaticy: 0.5; }
+      20% {
+          opacity: 1;
+          transform: translate(0%, 0%) scale(1);   /* es fa "normal" mentre apareix */
+      }
+      80% {
+        opacity: 1;
+        transform: translate(0%, 0%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(50%, -50%) scale(0.2); /* es fa més petit mentre desapareix */
+      }
+    }
     .fade-video {
       opacity: 0;
-      animation: fadeIn 3s ease-in forwards;
       max-width: 100%; 
       width: 95%;
       height: 95%;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* X, Y, difusió, color */
-      border-radius: 8px; /* opcional, per fer les vores arrodonides */
+      border-radius: 8px; 
+      /*animation: fadeIn 3s ease-in forwards;*/
+      
     } 
 
     @keyframes fadeIn {
@@ -165,6 +196,7 @@
       margin: 0;
       line-height: 150px;
       text-align: center;
+      text-shadow: 6px 4px 8px #aaa;
       /* Start off the right edge */
       transform: translateX(100%);
       /* Animate to the left */
@@ -178,9 +210,9 @@
 </head>
 <body>
   
-  <img class="logo" src="https://drive.google.com/thumbnail?id=1JUgMf-l53ZpiPQQiola2C8J25z6HdTnq&sz=w500" alt="Logo">
+ <img class="logo" src="https://drive.google.com/thumbnail?id=1JUgMf-l53ZpiPQQiola2C8J25z6HdTnq&sz=w500" alt="Logo">
   
-  <!--<div id="horaActual">Carregant hora...</div> -->
+  <!-- <div id="horaActual">Carregant hora...</div> -->
   
   <div class="contenidor" id="contenidor">Carregant...</div> 
 
@@ -190,61 +222,154 @@
   <script>
     let pantalles = []; 
     let index = 0; 
+    var temps = 6;
 
     async function carregaPantalles() {  
       const resposta = await fetch("https://script.google.com/macros/s/AKfycbwglDau1iN8sEQ4_Md2cpChoj8w_y5zVS4rzLpZmfnbUWNGwNgVo_ixPFP2Gd4ofUILjw/exec");
       pantalles = await resposta.json();
     }
    
-    function mostraPantalla(p) {
+   var DEPURA = 0; //1; //
+   //------------------------------------------------------------
+   if(DEPURA == 1){
+     const cont = document.getElementById("contenidor");
+      	cont.innerHTML = "";
+
+     const VID_SCR = 0;
+     if(VID_SCR == 1){
+
+      const url = "https://drive.google.com/file/d/1100DkwaxcOX0nXXbMT_dtrGfD_vCgp8W/preview";
+      const vid = document.createElement("iframe");
+        vid.src = url + "?autoplay=1&mute=1";
+        vid.allow = "autoplay";
+      //vid.className = 'fade-img';
+      vid.className = 'fade-video';
+        cont.appendChild(vid);
+      
+     }
+    
+     const IMG_SCR = 1;
+     if(IMG_SCR == 1){
+      const img = document.createElement("img");
+        img.src = "https://drive.google.com/thumbnail?id=1qIVReiEtYyvO8s3FUBjA9CTnTLZRfKvy&sz=w1280";
+      //img.className = 'scroll-img';
+      img.className = 'fade-img';
+      img.style.animation = "fadeZoom 8s ease-in-out infinite";
+      img.style.animationDuration = `${temps}s`;
+    	cont.appendChild(img);
+     }
+    
+     // TEXT SCROLL
+     const TEXT_SCR = 0;
+     if(TEXT_SCR == 1){
+      const div = document.createElement("div");    
+      const span = document.createElement("span");
+        div.className = "text-marquee";
+    	span.textContent = "Procés aprenentatge";
+     	div.appendChild(span);
+    	const maxHeight = window.innerHeight - div.offsetHeight;
+    	const topRandom = Math.random() * maxHeight;
+    	div.style.top = `${topRandom}px`;
+    	cont.appendChild(div);
+     }  
+    
+    }//------------------------------------------------------------
+    
+    else{
+     function mostraPantalla(p) {
       const cont = document.getElementById("contenidor");
       cont.innerHTML = "";
-
+      //cont.innerHTML = `Temps: ${temps}`;
       
       if (p.tipus === "horari") {
-        const div = document.createElement("div");
+       /***********************
+        ***** Horari ESO  *****
+        ***********************/
+        let filaDades = 0;
+        const nTaules = 6;
+        const div = document.createElement("div");        
         div.className = "horaris";
-        const taula = document.createElement("table");
-        const tcap = document.createElement("thead");
+        div.innerHTML = `<h1>Classes Actuals</h1><p id="horaActual">...</p>`;
         
+        const taula = document.createElement("table");        
       	// Capçalera
-  		const cap = document.createElement("tr");        
-        //cap.innerHTML = "<th style='border:1px solid #fff'>Hora</th>";
-  			p.materies[0].forEach(curs => {
-              	const cdad = document.createElement("th");
-    			cdad.innerHTML += `${curs}`; 
-        		cap.appendChild(cdad);                          
+  		/*const tcap1 = document.createElement("thead");
+        const cap1 = document.createElement("tr");        
+  			p.materies[filaDades].forEach((curs, ind) => {
+            	const cdad1 = document.createElement("th");
+    			cdad1.innerHTML += `${curs}`; 
+             	if (ind === 0) { cdad1.style.borderRight = "1px solid #ccc";  }
+        		cap1.appendChild(cdad1);                          
 	    	});        
-        tcap.appendChild(cap);
-      
+        tcap1.appendChild(cap1);      
         // Files de contingut
-        const tbod = document.createElement("tbody");
-  		for (let i = 1; i < p.materies.length; i++) {
-    		const fila = document.createElement("tr");              
-        	p.materies[i].forEach(materia => {
-              const fdad = document.createElement("td");
-              fdad.innerHTML += `${materia}`;
-              fila.appendChild(fdad);              
+        const tbod1 = document.createElement("tbody");
+  		for (let i = 1; i < 3; i++) {
+    		const fila1 = document.createElement("tr");
+        	p.materies[filaDades+i].forEach((materia, ind )=> {
+              const fdad1 = document.createElement("td");
+              fdad1.innerHTML += `${materia}`;
+              if (ind === 0) { fdad1.style.borderRight = "1px solid #ccc";  }
+              fila1.appendChild(fdad1);              
            	});            
-            tbod.appendChild(fila);      
-      	}     
+            tbod1.appendChild(fila1);
+      	}  
+		const tfEs1 = document.createElement("tr");
+        	tfEs1.style.height = "30px";
+        
+    	taula.appendChild(tcap1);
+        taula.appendChild(tbod1);
+        taula.appendChild(tfEs1);       
+       */
+       /************************
+        ***** Horari BATX  *****
+        ************************/
+        filaDades = 0;
+        for(let t= 0; t< nTaules; t++){
+          // Capçalera
+  		 const tcap2 = document.createElement("thead");
+         const cap2 = document.createElement("tr");        
+  			p.materies[filaDades*4].forEach((curs, ind) => {
+            	const cdad2 = document.createElement("th");
+    			cdad2.innerHTML += `${curs}`; 
+             	//if (ind === 0) { cdad2.style.borderRight = "1px solid #ccc";  }
+                cdad2.style.borderRight = "1px solid #ccc";
+        		cap2.appendChild(cdad2); 
+	    	});        
+          tcap2.appendChild(cap2);
+        
+          // Files de contingut
+          const tbod2 = document.createElement("tbody");
+  		  for (let i = 1; i < 3; i++) {
+    		const fila2 = document.createElement("tr");              
+        	p.materies[filaDades*4+i].forEach((materia, ind )=> {
+              const fdad2 = document.createElement("td");
+              fdad2.innerHTML += `${materia}`;
+              if (ind === 0) { fdad2.style.borderRight = "1px solid #ccc";  }
+              fila2.appendChild(fdad2);              
+           	});            
+            tbod2.appendChild(fila2);      
+      	  }  
 
-    	taula.appendChild(tcap);
-        taula.appendChild(tbod);
-    //div.innerHTML = `<h1>Classes Actuals</h1><p>${p.diahora}</p>`;
-    div.innerHTML = `<h1>Classes Actuals</h1><p id="horaActual">...</p>`;
-        
+		  const tfEs2 = document.createElement("tr");
+        	tfEs2.style.height = "30px";
+            
+    	 taula.appendChild(tcap2);
+         taula.appendChild(tbod2);
+         taula.appendChild(tfEs2);
+         filaDades++;
+    	}
         div.appendChild(taula);
-        cont.appendChild(div); 
-        
-      }
-    
-      
+        cont.appendChild(div);          
+       
+      }      
       else if (p.tipus === "imatge") {
         const img = document.createElement("img");
         img.src = p.url;
 		//img.className = 'scroll-img';
         img.className = 'fade-img';
+        img.style.animation = "fadeZoom 8s ease-in-out forwards";
+        img.style.animationDuration = `${temps}s`;
         cont.appendChild(img);
       }
       else if (p.tipus === "video") {
@@ -253,6 +378,8 @@
         vid.allow = "autoplay";
         vid.frameBorder = 0;
 		vid.className = 'fade-video';
+        vid.style.animation = "fadeZoom 2s ease-in-out forwards";
+        vid.style.animationDuration = `${temps}s`;
         cont.appendChild(vid);
 	  }
       else if (p.tipus === "text") {
@@ -264,10 +391,10 @@
     	const maxHeight = window.innerHeight - div.offsetHeight;
     	const topRandom = Math.random() * maxHeight;
     	div.style.top = `${topRandom}px`;
-        //div.textContent = p.text;
-        cont.appendChild(div);
+        cont.appendChild(div); 
       }
-    }
+      //cont.innerHTML += `Temps: ${temps}`;
+    } // FI function mostraPantalla
 
     async function iniciarCicle() {
       await carregaPantalles();
@@ -276,19 +403,24 @@
       setTimeout(() => {
         index = (index + 1) % pantalles.length;
         iniciarCicle();
+        temps = (pantalles[index].duracio || 10)*1.7;
       }, (pantalles[index].duracio || 10) * 1000);
     }
 
     iniciarCicle(); 
-    
+   } // FI DEBUG
+   
    function actualitzaHora() {
         const ara = new Date();
         const opcions = { day: '2-digit', month: 'long', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        const formatHora = ara.toLocaleString('ca-ES', opcions);
-        document.getElementById('horaActual').textContent = "Data: " + formatHora;
+        //const formatHora = ara.toLocaleString('es-ES', opcions);
+        const formatHora = ara.toLocaleString('es-ES');
+        document.getElementById('horaActual').textContent = formatHora;
       }
       setInterval(actualitzaHora, 1000);
       actualitzaHora();
+    
   </script>
 </body>
 </html>
+
