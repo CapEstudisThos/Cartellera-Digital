@@ -53,7 +53,7 @@
     .horaris {
       margin: 20px;
       top = 0px;
-      font-size: 2em;
+      font-size: 20px;
       padding: 1em;
       height: 100%;
       /*background: #aaa133;*/
@@ -283,48 +283,16 @@
       
       if (p.tipus === "horari") {
        /***********************
-        ***** Horari ESO  *****
+        *****  Horaris    *****
         ***********************/
         let filaDades = 0;
         const nTaules = 6;
         const div = document.createElement("div");        
         div.className = "horaris";
-        div.innerHTML = `<h1>Classes Actuals</h1><p id="horaActual">...</p>`;
+        div.innerHTML = `<p style = "font-size:50px;">Classes Actuals</p><p id="horaActual">...</p>`;
         
         const taula = document.createElement("table");        
-      	// Capçalera
-  		/*const tcap1 = document.createElement("thead");
-        const cap1 = document.createElement("tr");        
-  			p.materies[filaDades].forEach((curs, ind) => {
-            	const cdad1 = document.createElement("th");
-    			cdad1.innerHTML += `${curs}`; 
-             	if (ind === 0) { cdad1.style.borderRight = "1px solid #ccc";  }
-        		cap1.appendChild(cdad1);                          
-	    	});        
-        tcap1.appendChild(cap1);      
-        // Files de contingut
-        const tbod1 = document.createElement("tbody");
-  		for (let i = 1; i < 3; i++) {
-    		const fila1 = document.createElement("tr");
-        	p.materies[filaDades+i].forEach((materia, ind )=> {
-              const fdad1 = document.createElement("td");
-              fdad1.innerHTML += `${materia}`;
-              if (ind === 0) { fdad1.style.borderRight = "1px solid #ccc";  }
-              fila1.appendChild(fdad1);              
-           	});            
-            tbod1.appendChild(fila1);
-      	}  
-		const tfEs1 = document.createElement("tr");
-        	tfEs1.style.height = "30px";
-        
-    	taula.appendChild(tcap1);
-        taula.appendChild(tbod1);
-        taula.appendChild(tfEs1);       
-       */
-       /************************
-        ***** Horari BATX  *****
-        ************************/
-        filaDades = 0;
+
         for(let t= 0; t< nTaules; t++){
           // Capçalera
   		 const tcap2 = document.createElement("thead");
@@ -332,9 +300,8 @@
   			p.materies[filaDades*4].forEach((curs, ind) => {
             	const cdad2 = document.createElement("th");
     			cdad2.innerHTML += `${curs}`; 
-             	//if (ind === 0) { cdad2.style.borderRight = "1px solid #ccc";  }
-                cdad2.style.borderRight = "1px solid #ccc";
-        		cap2.appendChild(cdad2); 
+             	if (ind === 0) { cdad2.style.borderRight = "1px solid #ccc";  }
+                cap2.appendChild(cdad2); 
 	    	});        
           tcap2.appendChild(cap2);
         
