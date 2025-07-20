@@ -7,40 +7,61 @@
   <style>
     body {
       margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
       background-color: #2d2d2a; /* #f7f7f7; */
       color: #eee;
       text-align: center;
-      display: flex;
+      /*display: flex;
       justify-content: center; 
-      align-items: center;
+      align-items: center;*/
       height: 100vh;
     }
     .contenidor {
-      width: 100%;
-      height: 95%;
-      /*background: #f8faf0;*/
-      text-align: center;
-      /*position: absolute;*/
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /*background-color: #e5e8e8;*/
     }
     .logo {
       position: fixed;
-      top: 20px;
+      top: 10px;
       left: 50px;
       width: 200px;
       height: auto;
       z-index: 1000;
     }
+    .capcalera {
+      width: 95%;
+      height: 15%;
+      margin-top: 0.2%;
+      text-align:center; 
+      font-size: 50px;
+      padding-top: 3%;
+      /*padding: 0.2em;*/
+      color: #fff;
+      /*background-color: #f5b7b1;*/
+      /*box-shadow: 0 2px 4px rgba(192,192,192,0.5);*/
+      
+	}
+    #pantalles {
+      position: fixed;
+      top: 10px;
+      right: 250px;
+      border: 1px solid #ccc;
+    }
     #horaActual {
-      /*position: fixed;*/
-      /*bottom: 10px;
-      right: 15px;*/
-      background: rgba(255, 255, 255, 0.1);
+      position: fixed;
+      top: 10px;
+      right: 15px;
       /*border: 1px solid #ccc;*/
       border-radius: 5px;
       padding: 6px 12px;
       font-size: 24px;
       font-weight: bold;
+      background: rgba(255, 255, 255, 0.1);
       color: #ff3;
       box-shadow: 0 0 6px rgba(0,0,0,0.2);
       z-index: 999;
@@ -51,23 +72,43 @@
       background: #aaa133;
     } 
     .horaris {
-      margin: 20px;
-      top = 0px;
-      font-size: 20px;
-      padding: 1em;
-      height: 100%;
-      /*background: #aaa133;*/
-    } 
+      width: 95%;
+      height: 84%; /* 100 - 20 - 1 de marges */
+      margin-bottom: 0.2%;
+      margin-top: 0.2%;      
+      /*background-color: #fff59d; /* groc clar */
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: stretch; /*center;*/
+    }
+    
     table {
       font-size: 0.8em;
-      padding: 0.5em;
-      overflow: visible;
+      /*padding: 0.5em;*/
+      /*background: #1a1; */
       border-collapse: collapse;
       border-radius: 8px;
       width: 100%;
-      /*height: 75%;*/
+      height: 100%;
+      /*animation scroll-horari 5s ease-in forward;*/
 	}
-
+    .taula-animada {
+      /*width: 75%;
+      height: 75%;*/
+      /*display: block;*/
+      overflow: hidden;
+      background-color: #f7424a; 
+      /*animation: scroll-horari 5s ease-out 2s forwards;*/
+	}
+	@keyframes scroll-horari {
+      /*from {top: 0px;}
+      to {top: -100px;} */
+      0%  { transform: translateY(0px); }
+  	  50% { transform: translateY(-1100px); }
+      100% { transform: translateY(0px); }
+    }
+    
     thead{
       box-shadow: 0 4px 4px rgba(0,0,0,0.2);
       border-bottom: 2px solid #1c1c1c;
@@ -86,17 +127,17 @@
     }
     tbody tr:nth-child(odd) {
       background-color: #b6ffa9;
-      -webkit-animation: invalid 2s infinite; 
-      -moz-animation:    invalid 2s infinite;
-      -o-animation:      invalid 2s infinite; 
-      animation:         invalid 2s infinite; 
+      -webkit-animation: flashing 2s infinite; 
+      -moz-animation:    flashing 2s infinite;
+      -o-animation:      flashing 2s infinite; 
+      animation:         flashing 2s infinite; 
     }
     td {
       padding: 10px;
       text-align: center;
       border-bottom: 1px solid #ccc;
     }
-  	@keyframes invalid {
+  	@keyframes flashing {
       0%   { background-color: #b6ffa9; }
       /*50%  { background-color: #3cdf1f; }*/
       50%  { background-color: #72f65b; }
@@ -116,7 +157,8 @@
     }
     .scroll-img {
       position: relative; 
-      animation: moureImatge 10s linear infinite; 
+      /*animation: moureImatge 10s linear infinite; */
+      animation: moureImatge 10s linear; 
     }
 
     @keyframes moureImatge {
@@ -132,7 +174,7 @@
       /*box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); / * X, Y, difusió, color */
       border-radius: 8px;
       /*animation: fadeInOut 8s ease-in-out infinite;*/
-      /*animation: fadeZoom 5s ease-in-out infinite;*/
+      /*animation: fadeZoom 5s ease-in-out forward;*/
     }
 
     @keyframes fadeInOut {
@@ -200,7 +242,8 @@
       /* Start off the right edge */
       transform: translateX(100%);
       /* Animate to the left */
-      animation: scroll-left 10s linear infinite;
+      /*animation: scroll-left 10s linear infinite;*/
+      animation: scroll-left 10s linear;
     }
     @keyframes scroll-left {
       0% { transform: translateX(100%); }
@@ -210,8 +253,10 @@
 </head>
 <body>
   
- <img class="logo" src="https://drive.google.com/thumbnail?id=1JUgMf-l53ZpiPQQiola2C8J25z6HdTnq&sz=w500" alt="Logo">
+  <img class="logo" src="https://drive.google.com/thumbnail?id=1JUgMf-l53ZpiPQQiola2C8J25z6HdTnq&sz=w500" alt="Logo">
   
+  <div id="horaActual">..hora...</div>
+  <!-- <div id="pantalles">..hora...</div> -->
   <!-- <div id="horaActual">Carregant hora...</div> -->
   
   <div class="contenidor" id="contenidor">Carregant...</div> 
@@ -225,7 +270,7 @@
     var temps = 6;
 
     async function carregaPantalles() {  
-      const resposta = await fetch("https://script.google.com/macros/s/AKfycbwglDau1iN8sEQ4_Md2cpChoj8w_y5zVS4rzLpZmfnbUWNGwNgVo_ixPFP2Gd4ofUILjw/exec");
+      const resposta = await fetch("https://script.google.com/macros/s/AKfycbwDDPFjNk-1tHaQt6gW0otEyi4IxThII6jvySAJvFQ5PyJzoxMJfgYIqDNqLa6jOrou5Q/exec");
       pantalles = await resposta.json();
     }
    
@@ -273,8 +318,10 @@
     	cont.appendChild(div);
      }  
     
-    }//------------------------------------------------------------
-    
+    }
+    //***********************************************************
+    //  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    //***********************************************************
     else{
      function mostraPantalla(p) {
       const cont = document.getElementById("contenidor");
@@ -287,11 +334,15 @@
         ***********************/
         let filaDades = 0;
         const nTaules = 6;
-        const div = document.createElement("div");        
-        div.className = "horaris";
-        div.innerHTML = `<p style = "font-size:50px;">Classes Actuals</p><p id="horaActual">...</p>`;
-        
-        const taula = document.createElement("table");        
+        const divCap = document.createElement("div");
+          divCap.className = "capcalera";        
+          //divCap.innerHTML = `<p style = "font-size:50px;">HOLA Class Horaris</p>`;
+          divCap.innerHTML = `Classes Actuals`;
+          cont.appendChild(divCap);
+          
+        const divHor = document.createElement("div");
+          divHor.className = "horaris";        
+        const taula = document.createElement("table");
 
         for(let t= 0; t< nTaules; t++){
           // Capçalera
@@ -325,9 +376,39 @@
          taula.appendChild(tbod2);
          taula.appendChild(tfEs2);
          filaDades++;
+	//------------------
+		// Espera al següent "paint frame" perquè tingui mida
+		setTimeout(() => {
+  		 const alturaConte = divHor.offsetHeight;
+         const alturaTaula = taula.offsetHeight;
+  		 const distancia = (-alturaTaula+alturaConte) + "px";
+
+  		// Elimina l'animació anterior si existeix
+  		const estilAntic = document.getElementById("scroll-dinamic");
+  		if (estilAntic) estilAntic.remove();
+
+  		// Crea la nova animació dinàmica
+  		const style = document.createElement("style");
+  		  //style.id = "scroll-dinamic";
+  		  style.innerHTML = `
+    	    @keyframes scroll-horari2 {
+      			0%   { transform: translateY(0); }
+			    50%  { transform: translateY(${distancia}); }
+      			100% { transform: translateY(0); }
+    		}
+  		`;
+  		document.head.appendChild(style);
+  
+  		// Aplica l'animació
+  		  taula.style.animation = "scroll-horari2 20s linear infinite";
+  		  taula.style.animationDelay = "2s";
+
+		}, 100); // espera 100 ms perquè la taula tingui mida
+	//------------------
+	//cont.innerHTML = `Temps: ${distancia}`
     	}
-        div.appendChild(taula);
-        cont.appendChild(div);          
+        divHor.appendChild(taula);
+        cont.appendChild(divHor);
        
       }      
       else if (p.tipus === "imatge") {
@@ -360,9 +441,28 @@
     	div.style.top = `${topRandom}px`;
         cont.appendChild(div); 
       }
-      //cont.innerHTML += `Temps: ${temps}`;
+      //const info = document.getElementById("pantalles");
+      //info.innerHTML += `Temps: ${temps}`;
     } // FI function mostraPantalla
 
+	
+    async function iniciarCicle() {
+      await carregaPantalles();
+      if (pantalles.length === 0) return;
+      const info = document.getElementById("pantalles");
+      
+      for(let ind=0; ind<pantalles.length; ind++){
+        //info.innerHTML = `Pantalla ID : ${ind}`;        
+        temps = (pantalles[ind].duracio || 10)*1.7;
+        mostraPantalla(pantalles[ind]);
+        const duracio = (pantalles[ind].duracio || 10) * 1000;
+        await delay(duracio);  
+        
+      }      
+      iniciarCicle();
+    }
+
+ /*
     async function iniciarCicle() {
       await carregaPantalles();
       if (pantalles.length === 0) return;
@@ -373,15 +473,18 @@
         temps = (pantalles[index].duracio || 10)*1.7;
       }, (pantalles[index].duracio || 10) * 1000);
     }
-
+ */
     iniciarCicle(); 
    } // FI DEBUG
    
+   async function delay(ms) {
+  	 return new Promise(resolve => setTimeout(resolve, ms));
+   }
    function actualitzaHora() {
         const ara = new Date();
-        const opcions = { day: '2-digit', month: 'long', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        //const formatHora = ara.toLocaleString('es-ES', opcions);
-        const formatHora = ara.toLocaleString('es-ES');
+        const opcions = { day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        //const formatHora = ara.toLocaleString('ca-ES', opcions);
+        const formatHora = ara.toLocaleString('ca-ES');
         document.getElementById('horaActual').textContent = formatHora;
       }
       setInterval(actualitzaHora, 1000);
